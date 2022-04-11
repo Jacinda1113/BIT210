@@ -45,7 +45,7 @@ include("dbcon.php");
         <div class="container d-flex align-items-center justify-content-between">
   
           <div class="logo">
-            <h1 class="text-light"><a href="index.php"><span>HELP Aid</span></a></h1>
+            <h1 class="text-light"><a href="homepage.php"><span>HELP Aid</span></a></h1>
           </div>
   
           <nav id="navbar" class="navbar">
@@ -56,7 +56,7 @@ include("dbcon.php");
               <li><a class="nav-link scrollto " href="aidAppeal.php">Record New Appeal</a></li>
               <li><a class="nav-link scrollto " href="aidDisbursement.php">Record Aid Disbursement</a></li>
               <li><a class="nav-link scrollto " href="AidDelivered.php">Package Status</a></li>
-              <li><a class="nav-link scrollto " href="index.php">Logout</a></li>
+              <li><a class="nav-link scrollto " href="logout.php">Logout</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
           </nav><!-- .navbar -->
