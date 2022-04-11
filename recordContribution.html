@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Record Contribution</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="HELPaid.ico" rel="icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!--Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+          <h1 class="text-light"><a href="index.html"><span>HELP Aid</span></a></h1>
+        </div>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a class="nav-link scrollto" href="orgRepDashboard.html">Home</a></li>
+            <li><a class="nav-link scrollto" href="recordContribution.html">Record Contribution</a></li>
+            <li><a class="nav-link scrollto" href="registerApplicant.html">Applicant Registration</a></li>
+            <li><a class="nav-link scrollto " href="aidAppeal.html">Record New Appeal</a></li>
+            <li><a class="nav-link scrollto " href="aidDisbursement.html">Record Aid Disbursement</a></li>
+            <li><a class="nav-link scrollto " href="AidDelivered.html">Package Status</a></li>
+            <li><a class="nav-link scrollto " href="index.html">Logout</a></li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+      </div>
+  </header><!-- End Header -->
+
+    <main id="main">
+
+      <!-- ======= Breadcrumbs ======= -->
+      <section class="breadcrumbs">
+        <div class="container">
+
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Choose Appeal</h2>
+            <ol>
+              <li><a href="index.html">Home</a></li>
+              <li>Record Contribution</li>
+            </ol>
+          </div>
+        </div>
+      </section><!-- End Breadcrumbs -->
+
+      <section class="inner-page">
+        <div class="container">
+            <div class="row">
+              
+              <!-- Modal HTML Markup For Record Contribution Form-->
+              <div class="modal fade" id="recContributionForm">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-xs-center">Record Contribution</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="recordContribution" method="POST">
+                              <div class="form-group row">
+                                <input type="hidden" name="_token" value="">
+                                <div class="col-4">
+                                  <label class="control-label">Appeal ID</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="appealId" value="" hidden>
+                                    <p id="displayAppID"></p>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <div class="col-4">
+                                  <label class="control-label" for="donationType">Donation Type</label>
+                                </div>
+                                <div class="col-8">  
+                                  <select class="form-select" id="donationType">
+                                    <option value="cash" selected>Cash Donation</option>
+                                    <option value="goods">Goods Donation</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <!--Cash Donation Form-->
+                              <div id="cashForm">
+                                <div class="form-group row">
+                                  <div class="col-4">
+                                    <label class="control-label" for="amount">Total Amount</label>
+                                  </div>
+                                  <div class="col-8">
+                                      <input type="number" id="amount" class="form-control">
+                                  </div>
+                                </div>
+                                  <div class="form-group row">
+                                    <div class="col-4">
+                                      <label class="control-label" for="paymentMethod">Payment Channel</label>
+                                    </div>
+                                    <div class="col-8">  
+                                      <select class="form-select" id="paymentMethod">
+                                        <option value="-1" selected>Choose Payment Method</option>
+                                        <option value="Online Banking">Online Banking</option>
+                                        <option value="E-Wallet">E-Wallet</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <div class="col-4">
+                                      <label class="control-label" for="referenceNo">Reference No</label>
+                                    </div>
+                                    <div class="col-8">
+                                      <input type="text" id="referenceNo" class="form-control">
+                                    </div>
+                                  </div>
+                              </div>
+                              
+                              <!--Goods Donation Form-->
+                              <div id="goodsForm" hidden>
+                                <div class="form-group row">
+                                  <div class="col-4">
+                                    <label class="control-label" for="description">Description</label>
+                                  </div>
+                                  <div class="col-8">
+                                    <input type="text" id="description" class="form-control">
+                                  </div>
+                                </div>
+                                <div class="form-group row">
+                                  <div class="col-4">
+                                    <label class="control-label" for="estValue">Estimated Value</label>
+                                  </div>
+                                  <div class="col-8">
+                                    <input type="number" id="estValue" class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!--Submit Button-->
+                              <div class="form-group button">
+                                <button hidden type="button" id="hideModal" data-toggle="modal" data-target="#donationComplete" data-dismiss="modal"></button>
+                                <input type="submit" class="btn btn-default float-end">
+                              </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+
+              <!--Modal HTML Markup For Successfull Donation-->
+              <div class="modal fade" id="donationComplete">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-xs-center">Thank you</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Your Donation Has Been Recorded Successfully!</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+
+                <table class="table table-stripped table-bordered text-center">
+                    <tr>
+                        <th>Appeal ID</th>
+                        <th></th>
+                    </tr>
+
+                    <tr>
+                        <td>AP0001</td>
+                        <td><button class="btn btn-default btn-sm" id="btn1" type="button" onclick="getAppealID('AP001')" data-toggle="modal" data-target="#recContributionForm">
+                          SELECT
+                        </button></td>
+                    </tr>
+
+                    <tr>
+                        <td>AP0002</td>
+                        <td><button class="btn btn-default btn-sm" id="btn2" type="button" onclick="getAppealID('AP002')" data-toggle="modal" data-target="#recContributionForm">
+                          SELECT
+                        </button></td>
+                    </tr>
+
+                    <tr>
+                        <td>AP0003</td>
+                        <td><button class="btn btn-default btn-sm" id="btn3" type="button" onclick="getAppealID('AP003')" data-toggle="modal" data-target="#recContributionForm">
+                          SELECT
+                        </button></td>
+                    </tr>
+
+                    <tr>
+                        <td>AP0004</td>
+                        <td><button class="btn btn-default btn-sm" id="btn4" type="button" onclick="getAppealID('AP004')" data-toggle="modal" data-target="#recContributionForm">
+                          SELECT
+                        </button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </section>
+
+    </main><!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+
+            <div class="footer-contact">
+              <h3>HELP Aid</h3>
+              <p>
+                1 Jalan Pjs 11/15 Bandar Sunway <br>
+                Petaling Jaya, Selangor 46150<br>
+                Malaysia <br><br>
+                <strong>Phone:</strong> +60 1134 2322<br>
+                <strong>Email:</strong> helpaid@support.com<br>
+              </p>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="social-links mt-3 text-center">
+              <a href="https://www.twitter.com" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.facebook.com" class="facebook"><i class="bx bxl-facebook"></i></a>
+              <a href="https://www.instagram.com" class="instagram"><i class="bx bxl-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container py-4">
+        <div class="copyright">
+          &copy; Copyright <strong><span>HELP Aid</span></strong>. All Rights Reserved
+        </div>
+      </div>
+    </footer><!-- End Footer -->
+
+  </div>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Bootstrap javascript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    /**
+    * event handler for record donation form, where we display the field based on the donation type
+    */
+    var donationType = document.getElementById("donationType");
+
+    donationType.addEventListener("change", () => {
+      var selectedValue = donationType.options[donationType.selectedIndex].value;
+      if(selectedValue == "cash"){
+        document.getElementById("cashForm").hidden = false;
+        document.getElementById("goodsForm").hidden = true;
+      }
+      else{
+        document.getElementById("cashForm").hidden = true;
+        document.getElementById("goodsForm").hidden = false;
+      }
+    });
+
+    const recordContribution = document.getElementById("recordContribution");
+    
+    /*add even handler when submit the recordContribution*/
+    recordContribution.addEventListener("submit", (e) => {
+      const donationType = document.getElementById("donationType");
+      var selectedValue = donationType.options[donationType.selectedIndex].value;
+      e.preventDefault();
+      if(selectedValue == "cash"){
+        if(validateCashDonation() == true){
+          recordContribution.reset();
+        }
+      }
+      else{
+        if(validateGoodsDonation() == true){
+          recordContribution.reset();
+        }
+      }
+    });
+
+    /*Validate cash donation form*/
+    function validateCashDonation(){
+      const amount = recordContribution.amount.value;
+      const payment = recordContribution.paymentMethod.value;
+      const reference = recordContribution.referenceNo.value;
+      if(amount == 0){
+        alert("Please fill out the amount!");
+        recordContribution.amount.focus();
+        return false;
+      }
+      else if(amount < 0){
+        alert("Invalid amount!");
+        recordContribution.amount.focus();
+        return false;
+      }
+      else if(payment == "-1"){
+        alert("Please choose your payment method!");
+        return false;
+      }
+      else if(reference == ""){
+        alert("Please fill in the reference number!");
+        recordContribution.referenceNo.focus();
+        return false;
+      }
+      else{
+        document.getElementById("hideModal").click();
+        return true;
+      }
+    };
+
+    /*Validate goods donation form*/
+    function validateGoodsDonation(){
+      const description = recordContribution.description.value;
+      const estValue = recordContribution.estValue.value;
+      if(description == ""){
+        alert("Please fill out the goods description!");
+        recordContribution.amount.focus();
+        return false;
+      }
+      else if(estValue == 0){
+        alert("Please fill the estimated value!");
+        recordContribution.amount.focus();
+        return false;
+      }
+      else if(estValue < 0){
+        alert("Invalid value!");
+        recordContribution.amount.focus();
+        return false;
+      }
+      else{
+        document.getElementById("hideModal").click();
+        return true;
+      }
+    };
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Login Page</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="HELPaid.ico" rel="icon">
+
+	<!--Bootsrap 4 CDN-->
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    	<!--Fontawesome CDN-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+	<!-- Google Fonts -->
+    	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    
+    	<!--Custom styles-->
+	<link rel="stylesheet" type="text/css" href="assets/css/login.css">
+    	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="d-flex align-items-center">
+        <div class="container d-flex align-items-center justify-content-between">
+  
+          <div class="logo">
+            <h1 class="text-light"><a href="index.html"><span>HELP Aid</span></a></h1>
+          </div>
+  
+          <nav id="navbar" class="navbar">
+            <ul>
+              <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+              <li class="dropdown"><a href="#"><span>Appeals</span> <i class="bi bi-chevron-down"></i></a>
+                <ul>
+                  <li><a href="currentAppeal.html">Current Appeals</a></li>
+                  <li><a href="pastAppeal.html">Past Appeals</a></li>
+                </ul>
+              </li>
+              <li><a class="nav-link scrollto" href="selfRegistration.html">Applicant Registration</a></li>
+              <li><a class="nav-link scrollto active" href="login.html">Login</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+          </nav><!-- .navbar -->
+  
+        </div>
+      </header><!-- End Header -->
+  
+<div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                <h3>Sign In</h3>
+            </div>
+            <div class="card-body">
+                <form  id="loginForm" method="POST" >
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input type="text" id="username" class="form-control" placeholder="username">
+                        
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" id="password" class="form-control" placeholder="password">
+                    </div>
+                    <div class="input-group form-group">
+                        <select class="form-control" id="role">
+                            <option value="-1" selected>Select Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="OrgRep">Organization Representative</option>
+                            <option value="Applicant">Applicant</option>
+                          </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Login" class="btn float-right login_btn">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+    //login info
+    const adminLogin = {username : 'Admin123', password : 'Admin123'};
+    const applicantLogin = {username : 'Applicant123', password : 'Applicant123'};
+    const orgRepLogin = {username : 'OrgRep123', password : 'OrgRep123'}
+    localStorage.setItem("Admin", JSON.stringify(adminLogin));
+    localStorage.setItem("Applicant", JSON.stringify(applicantLogin));
+    localStorage.setItem("OrgRep", JSON.stringify(orgRepLogin));
+
+    var loginForm = document.getElementById("loginForm");
+
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let role = loginForm.role.value;
+        let username = loginForm.username.value;
+        let password = loginForm.password.value;
+        //check if the user submit empty form
+        if(username == ""){
+            alert("Please fill the username!");
+            loginForm.username.focus();
+        }
+        else if(password == ""){
+            alert("Please fill the password!");
+            loginForm.password.focus();
+        }
+        else if(role == "-1"){
+            alert("Please select a role!");
+        }
+        else{
+            var login = JSON.parse(localStorage.getItem(role));
+            if(username == login.username){
+                if(password == login.password){
+                    if(role == "Admin"){
+                    window.location.href = "admin.html";
+                    }
+                    else if(role == "OrgRep"){
+                        window.location.href = "orgRepDashboard.html";
+                    }
+                    else if(role == "Applicant"){
+                        window.location.href = "applicantDashboard.html";
+                    }
+                }
+                else{
+                    alert("Incorrect Password!");
+                    loginForm.password.focus();
+                }
+            }
+            else{
+                alert("Invalid Username!");
+                loginForm.username.focus();
+            }
+        }
+    });
+</script>
+</body>
+</html>
