@@ -105,8 +105,7 @@
               
               <div class="row">
                 <div class="form-group mt-3 mt-md-0">
-                  
-                  <a href="admin.php"><input type="submit" value="Submit" class="btn btn-default float-end"></a>
+                  <input type="submit" value="Submit" class="btn btn-default float-end">
                 </div>
               </div>
             </form>
