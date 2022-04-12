@@ -166,31 +166,3 @@
   });
 
 })()
-
-/**
- * Javascript to get appealID-
- */
-  function getAppealID(appealID){
-    document.getElementById("appealId").value = appealID;
-    document.getElementById("displayAppID").innerHTML = appealID;
-  }
-
-  /**
- * Javascript to get orgID-
- */
-   function getOrgID(orgID){
-    document.getElementById("orgID").value = orgID;
-    document.getElementById("displayOrgID").innerHTML = orgID;
-  }
-
-
-/**
- * Convert number to 3 digits
- */
- function to3digits(number) {
-  var output = number + '';
-  while (output.length < 3) {
-      output = '0' + output;
-  }
-  return output;
-}
