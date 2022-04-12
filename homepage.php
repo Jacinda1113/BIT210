@@ -145,7 +145,7 @@
                 <img src="assets/img/communityService.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <i class="bx bx-tachometer"></i>
-                  <h5 class="card-title"><a href="">Food Donation in Sabah</a></h5>
+                  <h5 class="card-title"><a href="pastAppeal.php">Food Donation in Sabah</a></h5>
                   <p class="card-text">Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
                 </div>
               </div>
@@ -155,7 +155,7 @@
                 <img src="assets/img/communityService2.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <i class="bx bx-file"></i>
-                  <h5 class="card-title"><a href="">Community Service in Mumbai</a></h5>
+                  <h5 class="card-title"><a href="pastAppeal.php">Community Service in Mumbai</a></h5>
                   <p class="card-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
                 </div>
               </div>
@@ -165,7 +165,7 @@
                 <img src="assets/img/communityService3.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <i class="bx bx-show"></i>
-                  <h5 class="card-title"><a href="">Petaling Jaya Anti Hungry Day</a></h5>
+                  <h5 class="card-title"><a href="pastAppeal.php">Petaling Jaya Anti Hungry Day</a></h5>
                   <p class="card-text">Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit, sed quia magni dolores eos qui ratione voluptatem sequi nesciunt Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet. </p>
                 </div>
               </div>
