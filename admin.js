@@ -104,9 +104,15 @@ function submitMoreForm(){
     }
   }
 
-  function submitForm(){
-    if(validateOrgForm())
-    document.getElementById("password").value = passwordGenerator();
-    orgRepForm.submit();
+function submitForm(){
+    if(validateOrgForm()){
+        orgRepForm.submit();
+    }
+}
+
+//addRep for the last submission of representative
+function endSubmission(){
+    document.getElementById("documentForm").setAttribute('action', "repSuccess.php");
+    document.getElementById("documentForm").submit();
 
 }
