@@ -1,20 +1,4 @@
-<?php
-$username = $fullname= $email = $mobileno = $jobtitle="";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = test_input($_POST["username"]);
-  $fullname = test_input($_POST["fullname"]);
-  $email = test_input($_POST["email"]);
-  $mobileno = test_input($_POST["mobileno"]);
-  $jobtitle = test_input($_POST["jobtitle"]);
-}
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +25,7 @@ function test_input($data) {
   <!-- Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
+
 </head>
 
 <body>
@@ -51,14 +36,14 @@ function test_input($data) {
         <div class="container-fluid d-flex align-items-center justify-content-between">
   
           <div class="logo">
-            <h1 class="text-light"><a href="index.html"><span>HELP Aid</span></a></h1>
+            <h1 class="text-light"><a href="homepage.php"><span>HELP Aid</span></a></h1>
           </div>
   
           <nav id="navbar" class="navbar">
             <ul>
-              <li><a class="nav-link scrollto" href="registerForOrg.html">Organization Registration</a></li>
-              <li><a class="nav-link scrollto " href="admin.html">Representative Registration</a></li>
-              <li><a class="nav-link scrollto" href="logout.php">Logout</a></li>
+              <li><a class="nav-link scrollto" href="registerForOrg.php">Organization Registration</a></li>
+              <li><a class="nav-link scrollto " href="admin.php">Representative Registration</a></li>
+              <li><a class="nav-link scrollto" href="homepage.php">Logout</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
           </nav><!-- .navbar -->
@@ -68,25 +53,103 @@ function test_input($data) {
     </header><!-- End Header -->
 
     <main id="main">
-       <!-- Modal HTML Markup For Organisation Representative Form-->
-       <form id="orgRepForm" method="POST" action= >
+
+        <!--Choose organization ID-->
+        <div class="container">
+          <div class="row">
+            <div class="text-center">
+              <h3 class="fw-bold mt-3">Welcome, Admin!</h3>
+              <form id="orgForm" method="POST" action="admin.php">
+              <label for="orgID"> Organization ID:</label>
+              <select name="orgID" id="orgID" class="form-select row" onchange="displaySelectedID();">
+                <option value="-1">Select an organization ID</option>
+                <?php
+                  require('dbconnection.php');
+                  $sqlquery ="SELECT * FROM organization";
+                  $ret = mysqli_query($con, $sqlquery);
+                  $options = "";
+
+                  while($row = mysqli_fetch_array($ret))
+                  {
+                    $options = $options."<option value ='$row[1]'>$row[0]</option>";    
+                  }
+                  echo "$options";
+                ?>              
+              </select>
+            <div class="text-center" name=orgID id="displayOrgID"></div>
+            <div class="text-center" id="displayOrgName"></div>
+            <br><br>
+            <div class="col-md-12 text-center">
+              <input type="button" value="Register Representative" onclick="inputOrgID();" class="btn btn-sm btn-default" data-target="#orgRep" data-toggle="modal">
+            </div>
+            </form>
+            </div>
+          </div>
+        </div>
+        
+       <!-- php For Organisation Representative Form-->
+        <?php
+        //create database connection
+        require("dbConnection.php");
+        
+        if($_SERVER["REQUEST_METHOD"] == "POST")
+        {
+          if(isset($_POST["orgID"]) && ($_POST["username"]) && isset($_POST["password"])&& isset($_POST["fullname"]) && isset($_POST["email"]) && isset($_POST["mobile"]) && isset($_POST["jobTitle"]))
+          {
+            $org_ID = $_POST["orgID"];
+            $user_name = $_POST["username"];
+            $pwd = $_POST["password"];
+            $full_name = $_POST["fullname"];
+            $user_email = $_POST["email"];
+            $mobile_no = $_POST["mobile"];
+            $job_title = $_POST["jobTitle"];
+
+            //Cannot use that username if username already exists
+            $duplicateUserName = "SELECT username FROM user WHERE username ='$user_name'";
+            $duplicate = $con->query($duplicateUserName);
+            $fetchDuplicate = $duplicate->fetch_all(MYSQLI_ASSOC);
+
+            if(count($fetchDuplicate)>0){
+              echo"<script>alert('Username has been used. Please use another username';orgRepForm.username.focus();)</script>";
+            }
+            else{
+              $insertNewQuery = "INSERT INTO user (username, password, fullname,email, mobileNo,jobTitle, OrgID, userType)
+              VALUES ('$user_name','$pwd', '$full_name','$user_email','$mobile_no','$job_title', '$org_ID' ,'ORG_REP')";
+              $insertNew = $con -> query($insertNewQuery);
+              $resultquery = $insertNew ===TRUE;
+              echo "<script>alert({$resultquery})</script>";
+              if($insertNew ==TRUE){
+                echo"<script>alert('Successfully Registered! Please check your email for default password.');</script>)";
+              }
+            }
+            $con->close();
+          }
+          
+      }
+        ?>
+        <!-- Modal HTML Markup For Organisation Representative Form-->
+       
         <div class="modal fade" id="orgRep">
         <div class="modal-dialog modal-dialog-centered">
-          <input type="hidden" name="_token" value="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title text-xs-center">Orgnization Representative</h4>
+                    <h4 class="modal-title text-xs-center">Organization Representative</h4>
                 </div>
                 <div class="form-area modal-body">
+                    <form id="orgRepForm" method="POST" action="admin.php" >
                       <div class="form-group row">
                         <div>
-                          <label class="col-12" id="displayOrgID"></label>
+                          <label for="orgID">Organization ID: </label>
+                          <span id="selectedOrgID"></span>
                         </div>
+                        <!--Default Password for the organisation Representative-->
+                        <input hidden type="text" id="password" name="password">
+                        
                         <div class="col-12">
                           <label for="username" class="control-label">User Name: </label>
                         </div>
                         <div class="col-12">
-                            <input type="text" class="form-control" value=""  id="username" name="username" placeholder="User Name"> 
+                            <input type="text" class="form-control" value=""  id="username" name="username" placeholder="User Name" required>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -94,16 +157,16 @@ function test_input($data) {
                           <label for="fullname" class="control-label">Full name: </label>
                         </div>
                         <div class="col-12">
-                            <input type="text" class="form-control" value="" id="fullname" name="fullname"  placeholder="Full Name">
+                            <input type="text" class="form-control" value="" id="fullname" name="fullname"  placeholder="Full Name" required> 
                         </div>
-
+                        
                       </div>
                         <div class="form-group row">
                           <div class="col-12">
                             <label for="username" class="control-label">Email: </label>
                           </div>
                           <div class="col-12">  
-                            <input type="email" value="" class="form-control" name="email" id="email" placeholder="Your Email">
+                            <input type="email" value="" class="form-control" name="email" id="email" placeholder="Your Email" required>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -111,7 +174,7 @@ function test_input($data) {
                             <label for="mobile" class="control-label">Mobile number: </label>
                           </div>
                           <div class="col-12">
-                            <input class="form-control" value="" id="mobile" name="mobile" type="tel" placeholder="+6012 1212 3458">
+                            <input class="form-control" value="" id="mobile" name="mobile" type="tel" placeholder="+6012 1212 3458" required>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -119,60 +182,21 @@ function test_input($data) {
                             <label for="jobTitle" class="control-label">Job Title:</label>
                           </div>
                             <div class="col-12">
-                                <input class="form-control" value="" id="jobTitle" name="jobTitle" type="text" placeholder="Job Title">
+                                <input class="form-control" value="" id="jobTitle" name="jobTitle" type="text" placeholder="Job Title" required>
                             </div>
                         </div>
-                        <div class="form-group button">
-                          <button hidden type="button" id="testing" data-toggle="modal" data-target="#registerDone" data-dismiss="modal">
-                          </button>
-                          <input type="submit" value="Submit" id="registerOrgRep" class="btn btn-default float-end">
-                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#orgRep" data-dismiss="modal" onclick="submitMoreForm()">More Representative</button>
+                          <button class="btn btn-default btn-sm" data-dismiss="modal" onclick="submitForm()">Submit Now</button>
                       </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-              </div><!-- /.modal -->
-            </form>           
-                          
-            <!--Modal For Successfull Registration of Organization Representative-->
-            <div class="modal fade" id="registerDone">
-              <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h4 class="modal-title text-xs-center">Thank you</h4>
-                      </div>
-                      <div class="modal-body">
-                          <p>Organisation Representative Has Been Registered Successfully!</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-                      </div>
-                  </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
 
-            <!--Choose organization ID-->
-            <div class="container">
-              <div class="row">
-                    <div class="text-center">
-                      <h3 class="fw-bold mt-3">Welcome, Admin!</h3>
-                      <label for="orgID"> Organization ID:</label>
-                      <select id="orgID" class="form-select row" name="orgID">
-                        <option value="-1" selected>Select an organization ID</option>
-                          <option value="HA001">HA001</option>
-                          <option value="HA002">HA002</option>
-                          <option value="HA003">HA003</option>
-                          <option value="HA004">HA004</option>
-                          <option value="HA005">HA005</option>
-                          <option value="HA006">HA006</option>
-                          <option value="HA007">HA007</option>
-                          <option value="HA008">HA008</option>
-                          <option value="HA009">HA009</option>
-                          <option value="HA010">HA010</option>
-                      </select>
-                      <button class="btn btn-sm btn-default" id="selectOrg" onclick="displaySelectedID();" data-toggle="modal" data-target="#orgRep">Confirm</button>
-                </div>
-            </div>
-            </div>
+                    </form>
+                    </div>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->     
+                          
+  
 
   </main><!-- End #main -->
 
@@ -226,89 +250,9 @@ function test_input($data) {
 
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
-  
-<!--Display Organization ID-->
-<script>
-  //function to get selected org ID
-  function displaySelectedID()
-  {
-    //get button element using ID
-    var selectOrg = document.getElementById('selectOrg');
-    //get datalist element using id
-    var getValue = document.getElementById('orgID');
-    document.getElementById("displayOrgID").innerHTML = "Selected Organization ID: " + getValue.options[getValue.selectedIndex].value;
-  }
-</script>
-    <!--Form Validation -->
-    <script>
-      //add event handler for organisation representative form
-      var orgRepForm = document.getElementById("orgRepForm");
-  
-      orgRepForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if(validateOrgForm() == true)
-        orgRepForm.reset();
-      });
-      
-      //function to validate organization representative form
-      function validateOrgForm(){
-        const username = orgRepForm.username.value;
-        const fullname = orgRepForm.fullname.value;
-        const email = orgRepForm.email.value;
-        const phone = orgRepForm.mobile.value;
-        const jobValue = orgRepForm.jobTitle.value;
-  
-        if(username == ""){
-          alert("Please fill in the username!");
-          orgRepForm.username.focus();
-          return false;
-        }
-        else if(username.length < 8){
-          alert("Username should at least have 8 characters");
-          orgRepForm.username.focus();
-          return false;
-        }
-        else if(fullname == ""){
-          alert("Please fill in the full name!");
-          orgRepForm.fullname.focus();
-          return false;
-        }
-        else if(email == ""){
-          alert("Please fill in the email address!");
-          orgRepForm.email.focus();
-          return false;
-        }
-        else if(isEmail(email) == false){
-          alert("Invalid email!");
-          return false;
-        }
-        else if(phone == ""){
-          alert("Please fill in the phone number");
-          orgRepForm.mobile.focus();
-          return false;
-        }
-        else if(!/^\+?([0-9]{4})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(phone)){
-          alert("Invalid phone number!");
-          orgRepForm.mobile.focus();
-          return false;
-        }
-        else if(jobValue == ""){
-          alert("Pelase fill in the Job title");
-          orgRepForm.jobTitle.focus();
-          return false;
-        }
-        else{
-          document.getElementById("testing").click();
-          return true;
-        }
-      }
-  
-      //function to check email format
-      function isEmail(email) {
-      return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-      }
-   </script>
 
+    <!--JS file-->
+    <script src="admin.js"></script>
 </body>
 
 </html>
